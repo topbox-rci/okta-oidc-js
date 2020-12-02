@@ -1,3 +1,7 @@
+# 1.0.2
+
+- [#952](https://github.com/okta/okta-oidc-js/pull/952) - Updates configuration-validation dependency of okta-jwt-verifier to 1.0.0
+
 # 1.0.1
 
 - [#935](https://github.com/okta/okta-oidc-js/pull/935) Updates jwks-rsa version for security fixes
