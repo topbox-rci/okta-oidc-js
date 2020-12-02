@@ -60,6 +60,10 @@ describe('Jwt Verifier', () => {
       }
     });
 
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
     it('should allow me to verify Okta access tokens', () => {
       return getAccessToken(issuer1AccessTokenParams)
       .then(accessToken => {
@@ -86,11 +90,14 @@ describe('Jwt Verifier', () => {
       });
     }, LONG_TIMEOUT);
 
-    it('should fail if no kid is present in the JWT header', () => {
+    it('should fail if no kid is present in the JWT header and keys endpoint provides > 1 key', () => {
       return getAccessToken(issuer1AccessTokenParams)
       .then(accessToken => verifier.verifyAccessToken(accessToken, expectedAud))
       .then(jwt => {
-        // Create an access token that does not have a kid
+        jest.spyOn(verifier.jwksClient, 'getKeys').mockImplementation((callback) => {
+          return callback([{kid: 1}, {kid: 2}]);
+        });
+         // Create an access token that does not have a kid
         const token = new njwt.Jwt(jwt.claims)
           .setIssuer(ISSUER)
           .setSigningAlgorithm('RS256')
