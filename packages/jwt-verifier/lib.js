@@ -89,9 +89,33 @@ function verifyAudience(expected, aud) {
   }
 }
 
+function verifyClientId(expected, aud) {
+  if( !expected ) {
+    throw new Error('expected client id is required');
+  }
+
+  assertClientId(expected);
+
+  if ( aud !== expected ) {
+    throw new Error(`audience claim ${aud} does not match expected client id: ${expected}`);
+  }
+}
+
 function verifyIssuer(expected, issuer) {
   if( issuer !== expected ) {
     throw new Error(`issuer ${issuer} does not match expected issuer: ${expected}`);
+  }
+}
+
+function verifyNonce(expected, nonce) {
+  if( nonce && !expected ) {
+    throw new Error('expected nonce is required');
+  }
+  if (!nonce && expected) {
+    throw new Error(`nonce claim is missing but expected: ${expected}`);
+  }
+  if( nonce && expected && nonce !== expected ) {
+    throw new Error(`nonce claim ${nonce} does not match expected nonce: ${expected}`);
   }
 }
 
@@ -115,15 +139,19 @@ class OktaJwtVerifier {
     });
     this.verifier = nJwt.createVerifier().setSigningAlgorithm('RS256').withKeyResolver((kid, cb) => {
       this.jwksClient.getSigningKey(kid, (err, key) => {
+        // If kid is undefined, but there is 1 signing key, `jwks-rsa` will not throw error
+        if (!kid)
+          err = new Error(`Error while resolving signing key for kid "${kid}"`);
+
         cb(err, key && (key.publicKey || key.rsaPublicKey));
       });
     });
   }
 
-  async verifyAsPromise(accessTokenString) {
+  async verifyAsPromise(tokenString) {
     return new Promise((resolve, reject) => {
       // Convert to a promise
-      this.verifier.verify(accessTokenString, (err, jwt) => {
+      this.verifier.verify(tokenString, (err, jwt) => {
         if (err) {
           return reject(err);
         }
@@ -147,6 +175,24 @@ class OktaJwtVerifier {
     const jwt = await this.verifyAsPromise(accessTokenString);
     verifyAudience(expectedAudience, jwt.claims.aud);
     verifyIssuer(this.issuer, jwt.claims.iss);
+    verifyAssertedClaims(this, jwt.claims);
+
+    return jwt;
+  }
+
+  async verifyIdToken(idTokenString, expectedClientId, expectedNonce) {
+    // njwt verifies expiration and signature.
+    // We require RS256 in the base verifier.
+    // Remaining to verify:
+    // - audience claim (must match client id)
+    // - issuer claim
+    // - nonce claim (if present)
+    // - any custom claims passed in
+
+    const jwt = await this.verifyAsPromise(idTokenString);
+    verifyClientId(expectedClientId, jwt.claims.aud);
+    verifyIssuer(this.issuer, jwt.claims.iss);
+    verifyNonce(expectedNonce, jwt.claims.nonce);
     verifyAssertedClaims(this, jwt.claims);
 
     return jwt;

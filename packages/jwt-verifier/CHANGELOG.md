@@ -1,3 +1,9 @@
+# 1.1.0
+
+### Features
+
+- [#951](https://github.com/okta/okta-oidc-js/pull/951) - Adds verifyIdToken()
+
 # 1.0.1
 
 - [#935](https://github.com/okta/okta-oidc-js/pull/935) Updates jwks-rsa version for security fixes
