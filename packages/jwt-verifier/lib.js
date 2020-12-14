@@ -138,13 +138,13 @@ class OktaJwtVerifier {
       rateLimit: true
     });
     this.verifier = nJwt.createVerifier().setSigningAlgorithm('RS256').withKeyResolver((kid, cb) => {
-      this.jwksClient.getSigningKey(kid, (err, key) => {
-        // If kid is undefined, but there is 1 signing key, `jwks-rsa` will not throw error
-        if (!kid)
-          err = new Error(`Error while resolving signing key for kid "${kid}"`);
-
-        cb(err, key && (key.publicKey || key.rsaPublicKey));
-      });
+      if (kid) {
+        this.jwksClient.getSigningKey(kid, (err, key) => {
+          cb(err, key && (key.publicKey || key.rsaPublicKey));
+        });
+      } else {
+        cb("No KID specified", null);
+      }
     });
   }
 
