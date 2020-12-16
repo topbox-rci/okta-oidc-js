@@ -35,7 +35,7 @@ export interface OktaAuthOptions extends BaseOptions {
   testing?: TestingOptions;
 }
  
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 class ConfigurationValidationError extends Error {}
 
 const findDomainURL = 'https://bit.ly/finding-okta-domain';
