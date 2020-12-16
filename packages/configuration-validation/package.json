@@ -60,6 +60,9 @@
     "moduleNameMapper": {
       "^@okta/configuration-validation$": "<rootDir>/src/lib"
     },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!lodash-es).+(js)$"
+    ],
     "restoreMocks": true,
     "testEnvironment": "jsdom",
     "testMatch": [
