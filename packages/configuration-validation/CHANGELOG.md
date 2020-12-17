@@ -2,13 +2,13 @@
 
 ### Features
 
-- [#954](https://github.com/okta/okta-oidc-js/pull/954) Add ES entry point for configuration-validation
+- [#954](https://github.com/okta/okta-oidc-js/pull/954) Adds ES entry point for configuration-validation
 
 # 1.0.0
 
 ### Features
 
-- [#879](https://github.com/okta/okta-oidc-js/pull/879) Convert to Typescript
+- [#879](https://github.com/okta/okta-oidc-js/pull/879) Adds support for Typescript
 
 # 0.4.3
 
