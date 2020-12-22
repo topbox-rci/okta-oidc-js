@@ -1,7 +1,8 @@
 # okta-oidc-js
-This is a monorepo that contains Okta's OpenID Connect JavaScript resources.
+~~This is a monorepo that contains Okta's OpenID Connect JavaScript resources.~~
+This is a fork of @okta/oidc-middlware.  The purpose is to implement a timeout.
 
-[![build status](https://img.shields.io/travis/okta/okta-oidc-js/master.svg?style=flat-square)](https://travis-ci.org/okta/okta-oidc-js)
+<!-- [![build status](https://img.shields.io/travis/okta/okta-oidc-js/master.svg?style=flat-square)](https://travis-ci.org/okta/okta-oidc-js) -->
 
 **Table of Contents**
 
