@@ -1,5 +1,5 @@
 {
-  "name": "@topbox/oidc-middleware",
+  "name": "@topbox-rci/oidc-middleware",
   "version": "4.0.2-mod",
   "description": "OpenId Connect middleware for authorization code flows (modified)",
   "repository": "https://github.com/topbox-rci/okta-oidc-js",
