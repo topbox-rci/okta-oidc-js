@@ -44,6 +44,9 @@ function customizeUserAgent(options) {
   headers['User-Agent'] = userAgent;
 
   options.headers = headers;
+
+  options.timeout = 30000;
+
   return options;
 }
 
